@@ -7,7 +7,7 @@ const cors = require('cors')
 require('dotenv').config()
 
 // PORT, database and error middlewares
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5500
 const connectDb = require('./config/db')
 const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 
@@ -34,6 +34,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use('/storage/images', express.static('storage/images'))
 app.use('/storage/certificates', express.static('storage/certificates'))
+
+// route middlewares
 app.use('/api/auth', authRoutes)
 app.use('/api/user-profile', userProfileRoutes)
 app.use('/api/beautician-profile', beauticianProfileRoutes)
@@ -55,6 +57,6 @@ app.use(notFound)
 app.use(errorHandler)
 
 // starting the server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`server is listening at PORT ${PORT}`)
 })
