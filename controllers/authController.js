@@ -123,7 +123,7 @@ const requestResetPasswordUser = asyncHandler(async (req, res) => {
 
     const link = `${clientURL}/page-user-reset-password?token=${resetToken}&id=${user._id}`
 
-    sendEmail(
+    const info = await sendEmail(
         user.email,
         "Password Reset Request",
         {
@@ -133,8 +133,7 @@ const requestResetPasswordUser = asyncHandler(async (req, res) => {
         "./template/requestResetPassword.handlebars"
     )
 
-
-    if (link) {
+    if (info) {
         res.status(200).json({ message: "success" })
     }
     
@@ -176,7 +175,7 @@ const resetPasswordUser = asyncHandler(async (req, res) => {
             email:updatedUser.email
         })
 
-        sendEmail(
+        const info = await sendEmail(
             updatedUser.email,
             "Password Reset Successfully",
             {
@@ -187,7 +186,10 @@ const resetPasswordUser = asyncHandler(async (req, res) => {
 
         await userTokenModel.deleteOne(passwordResetToken)
 
-
+        if (info) {
+            res.status(200).json({ message: "success" })
+        }
+    
     }
     else {
         res.status(404)
@@ -346,7 +348,7 @@ const requestResetPasswordAdmin = asyncHandler(async (req, res) => {
     const link = `${clientURL}/page-admin-reset-password?token=${resetToken}&id=${admin._id}`
 
 
-    sendEmail(
+    const info = await sendEmail(
         admin.email,
         "Password Reset Request",
         {
@@ -357,7 +359,7 @@ const requestResetPasswordAdmin = asyncHandler(async (req, res) => {
     )
 
 
-    if (link) {
+    if (info) {
         res.status(200).json({ message: "success" })
     }
     
@@ -399,7 +401,7 @@ const resetPasswordAdmin = asyncHandler(async (req, res) => {
             email:updatedAdmin.email
         })
 
-        sendEmail(
+        const info = await sendEmail(
             updatedAdmin.email,
             "Password Reset Successfully",
             {
@@ -410,6 +412,10 @@ const resetPasswordAdmin = asyncHandler(async (req, res) => {
 
         await adminTokenModel.deleteOne(passwordResetToken)
 
+        if (info) {
+             res.status(200).json({ message: "success" })
+        }
+        
 
     }
     else {
@@ -569,7 +575,7 @@ const requestResetPasswordBeautician = asyncHandler(async (req, res) => {
     const link = `${clientURL}/page-beautician-reset-password?token=${resetToken}&id=${beautician._id}`
 
 
-    sendEmail(
+   const info = await sendEmail(
         beautician.email,
         "Password Reset Request",
         {
@@ -580,7 +586,7 @@ const requestResetPasswordBeautician = asyncHandler(async (req, res) => {
     )
 
 
-    if (link) {
+    if (info) {
         res.status(200).json({ message: "success" })
     }
     
@@ -622,7 +628,7 @@ const resetPasswordBeautician = asyncHandler(async (req, res) => {
             email:updatedBeautician.email
         })
 
-        sendEmail(
+        const info = await sendEmail(
             updatedBeautician.email,
             "Password Reset Successfully",
             {
@@ -632,6 +638,10 @@ const resetPasswordBeautician = asyncHandler(async (req, res) => {
         )
 
         await beauticianTokenModel.deleteOne(passwordResetToken)
+
+        if (info) {
+            res.status(200).json({ message: "success" })
+        }
 
 
     }

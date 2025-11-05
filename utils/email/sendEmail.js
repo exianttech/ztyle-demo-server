@@ -3,12 +3,11 @@ const handlebars = require('handlebars')
 const fs = require('fs')
 const path = require('path')
 
-const sendEmail = (email, subject, payload, template) => {
+const sendEmail = async (email, subject, payload, template) => {
     
     try {
 
-         const transporter = nodemailer.createTransport({
-
+        const transporter = nodemailer.createTransport({
             service: process.env.EMAIL_SERVICE,
             host: process.env.EMAIL_HOST,
             port: 587,
@@ -24,30 +23,23 @@ const sendEmail = (email, subject, payload, template) => {
         const source = fs.readFileSync(path.join(__dirname, template), 'utf8')
         const compiledTemplate = handlebars.compile(source)
 
-        const options = () => {
-            
-            return {
-                from: process.env.EMAIL_USERNAME,
-                to: email,
-                subject: subject,
-                html:compiledTemplate(payload)
-            }
+        const options = {
+            from: process.env.EMAIL_USERNAME,
+            to: email,
+            subject,
+            html: compiledTemplate(payload)
         }
 
-         transporter.sendMail(options(), (error, info) => {
-            
-            if (error) {
-                return error
-            }
-            else {
-                return info
-            }
-        })
+        const info = await transporter.sendMail(options);
+        console.log('Mail sent:', info.response);
+        return info;
 
     }
     catch (err) {
-        return err
+        console.error('Mail send failed:', err.message);
+        throw new Error('Email sending failed: ' + err.message);
     }
+
 
 }
 
