@@ -12,7 +12,7 @@ const notificationHome = asyncHandler(async (req, res) => {
 })
 
 const addNotification = asyncHandler(async (req, res) => {
-    const { senderName, senderId, receiverId, message } = req.body
+    const { senderName, senderId, receiverId, message, notificationType } = req.body
     
     // back end validation
     if (!senderName || !senderId || !receiverId || !message) {
@@ -21,7 +21,7 @@ const addNotification = asyncHandler(async (req, res) => {
     }
     
     // add new notification to db 
-    const notification = await notificationModel.create({ senderName, senderId, receiverId, message })
+    const notification = await notificationModel.create({ senderName, senderId, receiverId, message, notificationType })
     if (notification) {
         res.status(200).json(notification)
     }

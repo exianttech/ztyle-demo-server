@@ -19,6 +19,11 @@ const notificationSchema = new Schema(
             type: String,
             required:true
         },
+        notificationType: {
+            type: String,
+            enum: ['secondary', 'warning', 'info', 'success', 'danger'],
+            default: 'info'
+        },
         status: {
             type: Boolean,
             default:false
